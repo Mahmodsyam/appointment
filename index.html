@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>موعدنا 💛 — محمود وشروق</title>
+  
+  <!-- خط Cairo الأنيق من Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- أيقونة الموقع (Favicon) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💛</text></svg>">
+  
+  <!-- ملف التنسيقات الفاخر -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- خلفية القلوب الهادئة المتحركة -->
+  <div class="floating-hearts-background" id="heartsBackground" aria-hidden="true"></div>
+
+  <!-- كانفاس مؤثرات الاحتفال (Confetti) -->
+  <canvas id="confettiCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;"></canvas>
+
+  <div class="app-container">
+
+    <!-- رأس التطبيق -->
+    <header class="app-header">
+      <div class="logo-badge">
+        <span class="sparkle">✨</span>
+        <span id="headerTitle">موعدنا 💛 — محمود وشروق</span>
+        <span class="sparkle">✨</span>
+      </div>
+    </header>
+
+    <!-- شريط التقدم (يظهر بدءًا من خطوة المدينة حتى خطوة الإضافات) -->
+    <nav class="progress-section" id="progressSection" style="display: none;" aria-label="مؤشر التقدم">
+      <div class="progress-header">
+        <span class="progress-step-title" id="progressStepTitle">
+          <span>📍</span> <span id="progressStepName">اختيار المدينة</span>
+        </span>
+        <span class="progress-counter" id="progressCounter">الخطوة ١ من ٦</span>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progressBarFill"></div>
+      </div>
+      <div class="step-indicators-pills" id="stepPills">
+        <div class="step-pill" data-step="1"></div>
+        <div class="step-pill" data-step="2"></div>
+        <div class="step-pill" data-step="3"></div>
+        <div class="step-pill" data-step="4"></div>
+        <div class="step-pill" data-step="5"></div>
+        <div class="step-pill" data-step="6"></div>
+      </div>
+    </nav>
+
+    <!-- المحتوى الرئيسي للموقع -->
+    <main id="mainContent">
+
+      <!-- ============================================================
+           الخطوة ٠: شاشة الدعوة وزر «لا» الهارب
+           ============================================================ -->
+      <section class="step-container invitation-screen" id="step-0" aria-labelledby="invitationQuestion">
+        <div class="step-badge" id="invitationBadge">إلى شروق، من محمود 💌</div>
+        <div class="invitation-envelope-icon" aria-hidden="true">💌</div>
+        <h1 class="invitation-title" id="invitationQuestion">شروق، بدّك نطلع سوا؟ 🥹💛</h1>
+        <p class="invitation-subtitle" id="invitationSubtitle">عندي موعد مع أحلى إنسانة… بس التفاصيل على ذوقك</p>
+
+        <!-- ساحة هروب زر «لا» الممتعة -->
+        <div class="invitation-arena" id="invitationArena">
+          <!-- فقاعة العبارات الطريفة التفاعلية -->
+          <div class="dodge-speech-bubble" id="dodgeSpeechBubble" role="status" aria-live="polite">
+            متأكدة يا شروق؟ 🥺
+          </div>
+
+          <div class="buttons-row" id="buttonsRow">
+            <button type="button" class="btn-yes" id="btnYes">
+              <span id="btnYesText">نعم 😍</span>
+            </button>
+            <button type="button" class="btn-no" id="btnNo">
+              <span id="btnNoText">لا 🙈</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           الخطوة ١: اختيار المدينة
+           ============================================================ -->
+      <section class="step-container" id="step-1" style="display: none;" aria-labelledby="step1Title">
+        <div class="step-header">
+          <div class="step-badge">الخطوة الأولى 🌸</div>
+          <h2 class="step-title" id="step1Title">وين حابّة نطلع؟ 📍</h2>
+          <p class="step-subtitle">اختاري المدينة اللي بترتاحي فيها ونقضي فيها أحلى وقت</p>
+        </div>
+
+        <div class="options-grid two-cols" id="cityOptionsGrid" role="radiogroup" aria-label="اختيار المدينة">
+          <!-- تُنشأ بطاقات المدن ديناميكيًا عبر JavaScript -->
+        </div>
+      </section>
+
+      <!-- ============================================================
+           الخطوة ٢: اختيار محل الأكل
+           ============================================================ -->
+      <section class="step-container" id="step-2" style="display: none;" aria-labelledby="step2Title">
+        <div class="step-header">
+          <div class="step-badge">الخطوة الثانية 🍽️</div>
+          <h2 class="step-title" id="step2Title">وين حابّة ناكل يا شروق؟ 😋</h2>
+          <p class="step-subtitle">أطيب أكل مع أحلى صحبة على ذوقك 🥰</p>
+        </div>
+
+        <div class="options-grid three-cols" id="foodOptionsGrid" role="radiogroup" aria-label="اختيار محل الأكل">
+          <!-- تُنشأ بطاقات محلات الأكل ديناميكيًا حسب المدينة المختارة -->
+        </div>
+      </section>
+
+      <!-- ============================================================
+           الخطوة ٣: اختيار محل التحلاية
+           ============================================================ -->
+      <section class="step-container" id="step-3" style="display: none;" aria-labelledby="step3Title">
+        <div class="step-header">
+          <div class="step-badge">الخطوة الثالثة 🍨</div>
+          <h2 class="step-title" id="step3Title">وبعد الأكل… من وين نجيب التحلاية؟ 🍰</h2>
+          <p class="step-subtitle">الحلو دايماً بيكمل بوجودك يا سكر 🍯</p>
+        </div>
+
+        <div class="options-grid three-cols" id="dessertOptionsGrid" role="radiogroup" aria-label="اختيار محل التحلاية">
+          <!-- تُنشأ بطاقات محلات التحلاية ديناميكيًا حسب المدينة المختارة -->
+        </div>
+      </section>
+
+      <!-- ============================================================
+           الخطوة ٤: اختيار اليوم
+           ============================================================ -->
+      <section class="step-container" id="step-4" style="display: none;" aria-labelledby="step4Title">
+        <div class="step-header">
+          <div class="step-badge">الخطوة الرابعة 📅</div>
+          <h2 class="step-title" id="step4Title">أي يوم بناسبك؟ 🗓️</h2>
+          <p class="step-subtitle">نقّي اليوم اللي بتكوني فيه مرتاحة ورايقة</p>
+        </div>
+
+        <div class="date-selector-wrapper">
+          <div class="options-grid" id="daysOptionsGrid" role="radiogroup" aria-label="اختيار اليوم والتاريخ">
+            <!-- تُنشأ بطاقات الأيام السبعة القادمة ديناميكيًا -->
+          </div>
+
+          <div class="other-date-btn-box">
+            <button type="button" class="btn-other-date" id="btnToggleCustomDate">
+              بفضّل يوم ثاني 📆
+            </button>
+          </div>
+
+          <div class="custom-date-picker-box" id="customDatePickerBox" style="display: none;">
+            <label for="customDateInput" style="font-weight: 700; color: var(--primary-rose);">
+              اختاري تاريخًا مستقبليًا بناسبك:
+            </label>
+            <input type="date" id="customDateInput" class="custom-date-input" aria-label="اختر تاريخًا محددًا">
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           الخطوة ٥: اختيار الساعة
+           ============================================================ -->
+      <section class="step-container" id="step-5" style="display: none;" aria-labelledby="step5Title">
+        <div class="step-header">
+          <div class="step-badge">الخطوة الخامسة ⏰</div>
+          <h2 class="step-title" id="step5Title">أي ساعة بتناسبك؟ 🕓</h2>
+          <p class="step-subtitle">الوقت اللي بريحك بنكون جاهزين فيه يا غالية</p>
+        </div>
+
+        <div id="timeOptionsList" role="radiogroup" aria-label="اختيار الساعة">
+          <!-- تُنشأ بطاقات الساعات المتاحة ديناميكيًا -->
+        </div>
+      </section>
+
+      <!-- ============================================================
+           الخطوة ٦: إضافات اختيارية وملاحظة
+           ============================================================ -->
+      <section class="step-container" id="step-6" style="display: none;" aria-labelledby="step6Title">
+        <div class="step-header">
+          <div class="step-badge">الخطوة السادسة ✨</div>
+          <h2 class="step-title" id="step6Title">في إشي بتحبّي نضيفه لطلعتنا؟ ✨</h2>
+          <p class="step-subtitle">تفاصيل صغيرة بتخلّي المشوار أحلى وأحلى (يمكنكِ اختيار أكثر من خيار)</p>
+        </div>
+
+        <div class="addons-grid" id="addonsGrid" role="group" aria-label="إضافات اختيارية">
+          <!-- تُنشأ خيارات الإضافات المتعددة ديناميكيًا -->
+        </div>
+
+        <div class="skip-addons-box">
+          <button type="button" class="btn-skip-addons" id="btnSkipAddons">
+            نكمل بدون إضافات ⏭️
+          </button>
+        </div>
+
+        <!-- حقل الملاحظة القلبية الاختيارية -->
+        <div class="note-input-container">
+          <label for="personalNoteInput" class="note-input-label" id="noteInputLabel">
+            في أكلة أو مشروب أو إشي ثاني بخاطرك؟ اكتبيلي هون 💌
+          </label>
+          <textarea id="personalNoteInput" class="note-textarea" rows="3" placeholder="اكتبي أي إشي حابة نحكي فيه أو ناكله أو نجربه سوا... كل إشي على بالك أوامري ✨"></textarea>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           الخطوة ٧: بطاقة ملخص الموعد
+           ============================================================ -->
+      <section class="summary-container" id="step-7" style="display: none;" aria-labelledby="summaryTitle">
+        <div class="summary-header">
+          <div class="summary-heart-crown" aria-hidden="true">👑 💛 🌸</div>
+          <h2 class="summary-title" id="summaryTitle">هيك صارت طلعتنا يا شروق 💛</h2>
+          <p class="summary-sub">أحلى تفاصيل لأجمل مشوار مع أغلى الناس</p>
+        </div>
+
+        <!-- قائمة تفاصيل الموعد المرتبة -->
+        <div class="summary-details-list">
+          <div class="summary-item">
+            <span class="summary-item-label"><span>📍</span> المدينة</span>
+            <span class="summary-item-value" id="summaryCityVal">-</span>
+          </div>
+
+          <div class="summary-item">
+            <span class="summary-item-label"><span>😋</span> محل الأكل</span>
+            <span class="summary-item-value" id="summaryFoodVal">-</span>
+          </div>
+
+          <div class="summary-item">
+            <span class="summary-item-label"><span>🍰</span> محل التحلاية</span>
+            <span class="summary-item-value" id="summaryDessertVal">-</span>
+          </div>
+
+          <div class="summary-item">
+            <span class="summary-item-label"><span>🗓️</span> اليوم والتاريخ</span>
+            <span class="summary-item-value" id="summaryDayVal">-</span>
+          </div>
+
+          <div class="summary-item">
+            <span class="summary-item-label"><span>🕓</span> الساعة</span>
+            <span class="summary-item-value" id="summaryTimeVal">-</span>
+          </div>
+
+          <div class="summary-item">
+            <span class="summary-item-label"><span>✨</span> الإضافات</span>
+            <span class="summary-item-value" id="summaryAddonsVal">بدون إضافات</span>
+          </div>
+        </div>
+
+        <!-- الملاحظة إن وجدت -->
+        <div class="summary-note-box" id="summaryNoteBox" style="display: none;">
+          <div class="summary-note-label">💌 ملاحظة شروق:</div>
+          <div class="summary-note-text" id="summaryNoteVal"></div>
+        </div>
+
+        <!-- العبارة الرومانسية الختامية -->
+        <div class="summary-love-quote" id="summaryLoveQuote">
+          أحلى تفصيل بالطلعة إنك معي 💛 — محمود
+        </div>
+
+        <!-- أزرار الإجراءات في الملخص -->
+        <div class="summary-actions">
+          <button type="button" class="btn-whatsapp" id="btnSendWhatsApp">
+            <span>💌</span>
+            <span>ابعث اختياراتي لمحمود على واتساب</span>
+          </button>
+
+          <button type="button" class="btn-copy" id="btnCopyDetails">
+            <span>📋</span>
+            <span>نسخ تفاصيل الموعد</span>
+          </button>
+
+          <div class="summary-secondary-actions">
+            <button type="button" class="btn-edit-choices" id="btnEditChoices">
+              ✏️ تعديل اختياراتي
+            </button>
+            <button type="button" class="btn-reset-app" id="btnResetApp">
+              🔄 بدء من جديد
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- شريط أزرار التنقل (يظهر بين الخطوات 1 و 6) -->
+      <div class="navigation-bar" id="navigationBar" style="display: none;">
+        <button type="button" class="btn-nav btn-next" id="btnNext">
+          التالي ⬅️
+        </button>
+        <button type="button" class="btn-nav btn-prev" id="btnPrev">
+          رجوع ➡️
+        </button>
+      </div>
+
+    </main>
+
+    <!-- تذييل الصفحة -->
+    <footer class="app-footer">
+      <p id="footerText">
+        صُمّم وطُوّر بكل حب بواسطة محمود، خطيب شروق <span class="footer-heart">💛</span>
+      </p>
+    </footer>
+
+  </div>
+
+  <!-- نافذة احتفال الموافقة عند ضغط «نعم 😍» -->
+  <div class="celebration-modal" id="celebrationModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="celebration-content">
+      <div class="celebration-emoji">🥰 💖 🎉</div>
+      <h3 class="celebration-title" id="modalTitle">كنت عارف إنك رح توافقي يا شروق 😍</h3>
+      <p class="celebration-sub">يلا نختار تفاصيل طلعتنا 💛</p>
+      <button type="button" class="celebration-btn" id="btnStartPlanning">
+        يلا نبدأ المشوار 🚀✨
+      </button>
+    </div>
+  </div>
+
+  <!-- نافذة تأكيد إعادة البدء من جديد -->
+  <div class="confirm-modal" id="confirmResetModal" role="dialog" aria-modal="true" aria-labelledby="confirmResetTitle">
+    <div class="confirm-box">
+      <h3 class="confirm-title" id="confirmResetTitle">بدء الاختيار من جديد؟</h3>
+      <p class="confirm-text">هل ترغبين بمسح اختياراتك الحالية واختيار تفاصيل طلعتنا من البداية؟ 🌸</p>
+      <div class="confirm-actions">
+        <button type="button" class="btn-confirm-yes" id="btnConfirmReset">نعم، من جديد</button>
+        <button type="button" class="btn-confirm-no" id="btnCancelReset">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- إشعار التنبيه اللطيف (Sweet Toast) -->
+  <div class="toast-alert" id="toastAlert" role="alert" aria-live="assertive">
+    <span id="toastIcon">🌸</span>
+    <span id="toastMessage">تنبيه لطيف</span>
+  </div>
+
+  <!-- ملف الإعدادات وملف المنطق البرمجي -->
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
